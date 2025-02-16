@@ -1,0 +1,250 @@
+upf_version 2.1
+
+# #################################################
+# supply related commands
+# #################################################
+
+create_supply_port VDD 
+create_supply_port VDDOR
+create_supply_port vdd_A
+create_supply_port vdd_B
+create_supply_port vdd_D
+create_supply_port GND
+
+create_supply_net VDD
+create_supply_net VDDOR
+create_supply_net vdd_A
+create_supply_net vdd_B
+create_supply_net vdd_D
+create_supply_net GND
+
+create_supply_net vddsw_C   -resolve parallel
+
+create_supply_set SS_D_A    -function {power vdd_A}   -function {ground GND}
+create_supply_set SS_D_B    -function {power vdd_B}   -function {ground GND}
+create_supply_set SS_D_C    -function {power vddsw_C} -function {ground GND}
+create_supply_set SS_D_D    -function {power vdd_D}   -function {ground GND}
+
+create_supply_set SS_VDD_GND     -function {power VDD}   -function {ground GND}
+create_supply_set SS_VDDOR_GND   -function {power VDDOR} -function {ground GND}
+
+# #################################################
+# power domain related commands
+# #################################################
+
+create_power_domain D_A    -include_scope              -supply {primary SS_D_A}
+create_power_domain D_B    -elements {core/Domain_B}   -supply {primary SS_D_B}
+create_power_domain D_C    -elements {core/Domain_C}   -supply {primary SS_D_C}
+create_power_domain D_D    -elements {core/Domain_D}   -supply {primary SS_D_D}
+
+# #################################################
+# port definitions
+# #################################################
+
+set_port_attributes -ports [find_objects . -pattern * -object_type port -direction in] -driver_supply SS_VDDOR_GND
+set_port_attributes -ports [find_objects . -pattern * -object_type port -direction out] -receiver_supply SS_VDDOR_GND
+
+# #################################################
+# connections of P/G pins
+# #################################################
+
+
+connect_supply_net VDD \
+	 -ports { P01/VDD P02/VDD P03/VDD P04/VDD P05/VDD P06/VDD P07/VDD P08/VDD P09/VDD P10/VDD P11/VDD P12/VDD P13/VDD P14/VDD P15/VDD P16/VDD P17/VDD P18/VDD P19/VDD P20/VDD P21/VDD P22/VDD P23/VDD P24/VDD P25/VDD P26/VDD P27/VDD P28/VDD P29/VDD P30/VDD P31/VDD P32/VDD C00/VDD C01/VDD C10/VDD C11/VDD }
+
+connect_supply_net VDDOR \
+	 -ports { P08/VDDOR P11/VDDOR P17/VDDOR P24/VDDOR P29/VDDOR }
+
+connect_supply_net VDDOR \
+	 -ports { P01/VDDO P02/VDDO P03/VDDO P04/VDDO P05/VDDO P06/VDDO P07/VDDO P09/VDDO P10/VDDO P12/VDDO P13/VDDO P14/VDDO P15/VDDO P16/VDDO P18/VDDO P19/VDDO P20/VDDO P21/VDDO P22/VDDO P23/VDDO P25/VDDO P26/VDDO P27/VDDO P28/VDDO P30/VDDO P31/VDDO P32/VDDO C00/VDDO C01/VDDO C10/VDDO C11/VDDO }
+
+connect_supply_net VDDOR \
+	 -ports { P01/VDDR P02/VDDR P03/VDDR P04/VDDR P05/VDDR P06/VDDR P07/VDDR P09/VDDR P10/VDDR P12/VDDR P13/VDDR P14/VDDR P15/VDDR P16/VDDR P18/VDDR P19/VDDR P20/VDDR P21/VDDR P22/VDDR P23/VDDR P25/VDDR P26/VDDR P27/VDDR P28/VDDR P30/VDDR P31/VDDR P32/VDDR C00/VDDR C01/VDDR C10/VDDR C11/VDDR }
+
+connect_supply_net vdd_A \
+	 -ports { P04/VDDC P21/VDDC P30/VDDC }
+
+connect_supply_net vdd_B \
+	 -ports P18/VDDC
+
+connect_supply_net vdd_D \
+	 -ports P07/VDDC
+
+connect_supply_net GND \
+	 -ports { P05/GNDOR P10/GNDOR P13/GNDOR P26/GNDOR P31/GNDOR }
+
+connect_supply_net GND \
+	 -ports { P01/GNDO P02/GNDO P03/GNDO P04/GNDO P06/GNDO P07/GNDO P08/GNDO P09/GNDO P11/GNDO P12/GNDO P14/GNDO P15/GNDO P16/GNDO P17/GNDO P18/GNDO P19/GNDO P20/GNDO P21/GNDO P22/GNDO P23/GNDO P24/GNDO P25/GNDO P27/GNDO P28/GNDO P29/GNDO P30/GNDO P32/GNDO C00/GNDO C01/GNDO C10/GNDO C11/GNDO }
+
+connect_supply_net GND \
+	 -ports { P01/GNDR P02/GNDR P03/GNDR P04/GNDR P06/GNDR P07/GNDR P08/GNDR P09/GNDR P11/GNDR P12/GNDR P14/GNDR P15/GNDR P16/GNDR P17/GNDR P18/GNDR P19/GNDR P20/GNDR P21/GNDR P22/GNDR P23/GNDR P24/GNDR P25/GNDR P27/GNDR P28/GNDR P29/GNDR P30/GNDR P32/GNDR C00/GNDR C01/GNDR C10/GNDR C11/GNDR }
+
+# #################################################
+# power modes
+# #################################################
+
+add_power_state -supply SS_D_A -state {on -supply_expr {power == {FULL_ON 1.62} && ground == {FULL_ON 0.0}} -simstate NORMAL}
+add_power_state -supply SS_D_B -state {on -supply_expr {power == {FULL_ON 4.50} && ground == {FULL_ON 0.0}} -simstate NORMAL}
+add_power_state -supply SS_D_C -state {on -supply_expr {power == {FULL_ON 1.62} && ground == {FULL_ON 0.0}} -simstate NORMAL} \
+                               -state {off -supply_expr {power == {OFF} && ground == {FULL_ON 0.0}} -simstate CORRUPT}
+add_power_state -supply SS_D_D -state {on -supply_expr {power == {FULL_ON 1.08} && ground == {FULL_ON 0.0}} -simstate NORMAL}
+add_power_state -supply SS_VDD_GND -state {on -supply_expr {power == {FULL_ON 1.62} && ground == {FULL_ON 0.0}} -simstate NORMAL}
+add_power_state -supply SS_VDDOR_GND -state {on -supply_expr {power == {FULL_ON 4.50} && ground == {FULL_ON 0.0}} -simstate NORMAL}
+
+add_power_state -domain D_A -state {PM1 -logic_expr {SS_D_A == on && SS_D_B == on && SS_D_C == on  && SS_D_D == on && SS_VDD_GND == on && SS_VDDOR_GND == on}} \
+                            -state {PM2 -logic_expr {SS_D_A == on && SS_D_B == on && SS_D_C == off && SS_D_D == on && SS_VDD_GND == on && SS_VDDOR_GND == on}}
+
+# #################################################
+# power switch related commands
+# #################################################
+
+create_power_switch SWT -domain {D_C} \
+   -input_supply_port {vdde vdd_A} \
+   -output_supply_port {vddsw vddsw_C} \
+   -control_port {E core/dom_c_switch_en}  \
+   -on_state  {D_C_on  vdde { E}} \
+   -off_state {D_C_off      {!E}} 
+map_power_switch SWT -domain D_C -lib_cells SWIVBHD1OHD
+
+# #################################################
+# cell rules
+# #################################################
+
+## Domain A 
+
+set_level_shifter lsrA1 -domain D_A \
+   -source SS_D_A \
+   -sink SS_D_B \
+   -applies_to outputs \
+   -name_prefix LSRA1 \
+   -name_suffix UPF_LS \
+   -rule low_to_high \
+   -location self
+map_level_shifter_cell lsrA1 -domain D_A -lib_cells { LSHVFU5VHDX1 LSHVFU5VHDX2 LSHVFU5VHDX3 LSHVFU5VHDX4 }
+
+set_level_shifter lsrA2 -domain D_A \
+   -source SS_D_B \
+   -sink SS_D_A \
+   -applies_to inputs \
+   -name_prefix LSRA2 \
+   -name_suffix UPF_LS \
+   -rule high_to_low \
+   -location self
+map_level_shifter_cell lsrA2 -domain D_A -lib_cells { LSHVT5VDHDX1 LSHVT5VDHDX2 }
+
+set_isolation isoA3 -domain D_A \
+   -source SS_D_C \
+   -sink SS_D_A \
+   -applies_to inputs \
+   -isolation_supply_set SS_D_C \
+   -isolation_signal "core/dom_c_isolate" \
+   -isolation_sense high \
+   -clamp_value latch \
+   -name_prefix ISOA3 \
+   -name_suffix UPF_ISO \
+   -location self
+map_isolation_cell isoA3 -domain D_A -lib_cells { ISOTHSHDX1 ISOTHSHDX2 ISOTHSHDX3 ISOTHSHDX4 }
+
+set_level_shifter lsrA4 -domain D_A \
+   -source SS_D_D \
+   -sink SS_D_A \
+   -applies_to inputs \
+   -name_prefix LSRA4 \
+   -name_suffix UPF_LS \
+   -rule low_to_high \
+   -location self
+map_level_shifter_cell lsrA4 -domain D_A -lib_cells { LSHVTUHDX1 LSHVTUHDX2 }
+
+## Domain B
+
+set_level_shifter lsrB1 -domain D_B \
+   -source SS_VDD_GND \
+   -sink SS_D_B \
+   -applies_to inputs \
+   -name_prefix LSRB1 \
+   -name_suffix UPF_LS \
+   -rule low_to_high \
+   -location other
+map_level_shifter_cell lsrB1 -domain D_B -lib_cells { LSHVFU5VHDX1 LSHVFU5VHDX2 LSHVFU5VHDX3 LSHVFU5VHDX4 }
+
+## Domain C
+
+set_level_shifter lsrC1 -domain D_C \
+   -source SS_D_B \
+   -sink SS_D_C \
+   -applies_to inputs \
+   -name_prefix LSRC1 \
+   -name_suffix UPF_LS \
+   -rule high_to_low \
+   -location self
+map_level_shifter_cell lsrC1 -domain D_C -lib_cells { LSHVT5VDHDX1 LSHVT5VDHDX2 }
+
+set_level_shifter lsrC2 -domain D_C \
+   -source SS_D_D \
+   -sink SS_D_C \
+   -applies_to inputs \
+   -name_prefix LSRC2 \
+   -name_suffix UPF_LS \
+   -rule low_to_high \
+   -location self
+map_level_shifter_cell lsrC2 -domain D_C -lib_cells { LSHVTSUHDX1 LSHVTSUHDX2 }
+
+set_retention strC3 -domain D_C \
+   -retention_supply_set SS_D_A \
+   -save_signal {core/dom_c_retain high} \
+   -restore_signal {core/dom_c_retain low}
+
+## Domain D
+
+set_level_shifter lsrD1 -domain D_D \
+   -source SS_D_A \
+   -sink SS_D_D \
+   -applies_to inputs \
+   -name_prefix LSRD1 \
+   -name_suffix UPF_LS \
+   -rule high_to_low \
+   -location self 
+map_level_shifter_cell lsrD1 -domain D_D -lib_cells { LSHVTDHDX1 LSHVTDHDX2 }
+
+set_level_shifter lsrD2 -domain D_D \
+   -source SS_D_B \
+   -sink SS_D_D \
+   -applies_to inputs \
+   -name_prefix LSRD2 \
+   -name_suffix UPF_LS \
+   -rule high_to_low \
+   -location self
+map_level_shifter_cell lsrD2 -domain D_D -lib_cells { LSHVT5VDHDX1 LSHVT5VDHDX2 }
+#modified
+#set_isolation isoD3 -domain D_D \
+#   -source SS_D_C \
+#   -sink SS_D_D \
+#   -applies_to inputs \
+#   -isolation_supply_set SS_D_C \
+#   -isolation_signal "core/dom_c_isolate" \
+#   -isolation_sense high \
+#   -clamp_value latch \
+#   -name_prefix ISOD3 \
+#   -name_suffix UPF_ISO \
+#   -location self
+#map_isolation_cell isoD3 -domain D_D -lib_cells { ELSVTDHSHDX1 ELSVTDHSHDX2 }
+
+set_level_shifter lsrD4 -domain D_D \
+   -source SS_D_D \
+   -sink SS_VDD_GND \
+   -applies_to outputs \
+   -name_prefix LSRD4 \
+   -name_suffix UPF_LS \
+   -rule low_to_high \
+   -location other
+map_level_shifter_cell lsrD4 -domain D_D -lib_cells { LSHVTUHDX1 LSHVTUHDX2 }
+
+set_level_shifter lsrD5 -domain D_D \
+   -source SS_VDD_GND \
+   -sink SS_D_D \
+   -applies_to inputs \
+   -name_prefix LSRD5 \
+   -name_suffix UPF_LS \
+   -rule high_to_low \
+   -location self
+map_level_shifter_cell lsrD5 -domain D_D -lib_cells { LSHVTDHDX1 LSHVTDHDX2 }
