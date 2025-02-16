@@ -37,7 +37,7 @@ initial begin
 end
 
 initial begin
-
+`ifdef upf_sim
     `ifdef presyn
         status=$supply_on("tb_MV_Demo.MV_Demo.VDD", 1.62);
         status=$supply_on("tb_MV_Demo.MV_Demo.VDDOR", 4.50);
@@ -77,6 +77,8 @@ initial begin
         status=$supply_on("tb_MV_Demo.MV_Demo.vdd_D", 1.08);
         status=$supply_on("tb_MV_Demo.MV_Demo.GND", 0.0);
     `endif
+
+`endif
 
     tracefile = $fopen(tracefileName, "w");
     $fdisplay(tracefile,"@nodes");
