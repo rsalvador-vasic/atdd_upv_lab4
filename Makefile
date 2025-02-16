@@ -39,6 +39,7 @@ sim_upf:
 	-notimingchecks \
 	-input ../tcl/xcelium_gen_vcd_presyn.tcl \
 	+define+presyn \
+	+define+upf_sim \
 	-logfile xmelab_postsyn.log \
 	-lps_dut_top tb_MV_Demo.MV_Demo \
 	-lps_1801 ../local/MV_Demo.upf \
