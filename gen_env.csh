@@ -18,3 +18,5 @@ echo "INCLUDE ../virtuoso/xt018_combine.lib" >> local/cds.lib
 echo "DEFINE XSPRAMLP_96X16_M8TA ../virtuoso/XSPRAMLP_96X16_M8TA" >> local/cds.lib
 echo "DEFINE MV_Demo $PWD/innovus/MV_Demo" >> local/cds.lib
 
+
+echo "INCLUDE ../local/cds.lib"  > innovus/cds.lib
