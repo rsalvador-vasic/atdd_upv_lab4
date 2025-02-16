@@ -11,7 +11,6 @@ ln -s /cadence_pdk/xfab/XKIT/x_all/cadence/XFAB_Digital_MultiVoltage_RefKit-cade
 mkdir xcelium conformal genus innovus xcelium/work xcelium/work_lib xcelium/work_sub
 
 cp /cadence_pdk/xfab/XKIT/x_all/cadence/XFAB_Digital_MultiVoltage_RefKit-cadence/v1_1_1/xcelium/cds.lib xcelium/
-cp /cadence_pdk/xfab/XKIT/x_all/cadence/XFAB_Digital_MultiVoltage_RefKit-cadence/v1_1_1/src/MV_Demo.upf local/
 
 
 echo "INCLUDE ../virtuoso/xt018.lib"         >  local/cds.lib
