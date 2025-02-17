@@ -191,8 +191,8 @@ map_level_shifter_cell lsrC2 -domain D_C -lib_cells { LSHVTSUHDX1 LSHVTSUHDX2 }
 
 set_retention strC3 -domain D_C \
    -retention_supply_set SS_D_A \
-   -save_signal {core/dom_c_retain high} \
-   -restore_signal {core/dom_c_retain low}
+   -save_signal {core/dom_c_retain posedge} \
+   -restore_signal {core/dom_c_retain negedge}
 
 ## Domain D
 
