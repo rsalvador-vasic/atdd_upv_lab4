@@ -398,4 +398,4 @@ reportPowerSwitch -outFile MV_Demo.powerswitch.rpt
 saveDesign -cellview [list $libName $cellName layout_06_signoff] -rc
 
 
-#exit
+exit
