@@ -136,7 +136,7 @@ set_isolation isoA3 -domain D_A \
    -source SS_D_C \
    -sink SS_D_A \
    -applies_to inputs \
-   -isolation_supply_set SS_D_C \
+   -isolation_supply_set SS_D_A \
    -isolation_signal "core/dom_c_isolate" \
    -isolation_sense high \
    -clamp_value latch \
